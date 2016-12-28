@@ -13,3 +13,5 @@ Creating a new branch is quick and simple.
 
 Merge not by fast forward:--no-ff.
 
+Test for there is a bug to fix when you devloping!
+
