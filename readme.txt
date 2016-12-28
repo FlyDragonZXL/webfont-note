@@ -11,3 +11,5 @@ Creating a new branch 'dev'
 
 Creating a new branch is quick and simple.
 
+Merge not by fast forward:--no-ff.
+
