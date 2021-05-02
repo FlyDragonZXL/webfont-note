@@ -1,0 +1,101 @@
+<!-- git 常用的命令 -->
+<script>
+    /** git提交指定文件到远程仓库 */
+    {
+        1 ` git status -s ` //查看仓库状态
+        2 ` git add ./src/components/文件名 ` //从本地工作区添加到本地仓库到暂存区。添加需要提交的文件名（加路径--参考git status 打印出来的文件路径）
+        3 ` git stash -u -k ` //忽略其他文件，把现修改的隐藏起来，这样提交的时候就不会提交未被add的文件。［将本地工作区的其他改动，先移动到stash缓存中］［git add 添加过的文件已经被放到了本地仓库的暂存区，所以这里不会包含这部分文件］
+        4 ` git commit -m "哪里做了修改..." ` //从暂存区，提交到本地branch。-m后面跟的是版本描述
+        5 ` git pull ` //拉取合并：从远程branch拉取最新代码到本地branch。本地branch指的是本地仓库分支，不是本地工作区！
+        6 ` git push ` //推送到远程仓库
+        7 ` git stash pop ` //恢复之前忽略的文件（非常重要的一步）［从stash缓存中，把刚刚暂存的文件，移回到当前工作区］
+
+    }
+
+    /** 本地仓库和远程仓库关联 */
+    {
+        // 1、在本地创建SSH Key，并将其注册到远程仓库的配置中，以GitHub为例：
+        {`
+            1、windows系统：cmd如下执行命令
+                ssh-keygen -t rsa -C "youremail@example.com"  //邮箱使用自己的邮箱
+                生成的SSH Key：存放在用户主目录下的.ssh文件夹中，一般执行完命令会有提示。
+                里面有：id_rsa 和 id_rsa.pub
+                id_ras 是私钥，不能泄露。id_ras.pub 是公钥，可分享
+
+            2、登录GitHub添加密钥：
+                网页右上角点击“Account settings”图标，然后在左侧导航栏点击“SSH Keys”，进入“SSH Keys”页面。
+                点“Add SSH Key”，填上任意你觉得有意义的Title，在Key文本框里粘贴id_rsa.pub文件的内容，提交。添加后，关联OK了
+
+        `}
+        // 2、在远程仓库里，创建一个用于你现在项目的仓库，以GitHub上的为例：
+        {`
+            1、GitHub上创建新的仓库：
+                登陆GitHub，点击右上角的“Create a new repo”按钮：在Repository name填入一个仓库名，如learngit，
+                其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库。
+
+            注意：GitHub告诉我们：
+                1、可以从这个远程仓库克隆出新的本地仓库
+                2、也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库
+
+        `}
+        // 2.1、从远程的项目代码仓库clone一个本地仓库：以GitHub上的为例：
+        {`
+            1、获取仓库地址：
+                比如有一个名为gitskikks的远程仓库选择传输协议：ssh 或 https ［默认为ssh ］
+                然后复制链接。如：https://github.com/michaelliao/gitskills.git［https较慢，且推送时需要口令］
+
+            2、在本地目录下执行clone命令：
+                git clone git@github.com:michaelliao/gitskills.git
+                然后，cd gitskills ,就可以在本地处理项目代码了
+        `}
+        // 2.2、从本地仓库关联远程仓库，并向远程仓库push代码：【待确认！】
+        {`
+            1、仓库关联：
+                在本地也创建一个名为learngit的仓库，然后在本地的learngit仓库的目录下执行命令：
+                    git remote add origin 远程仓库地址远程仓库地址
+                    如：git@github.com:michaelliao/learngit.git
+                    注意：
+                        该命令执行完，是将本地的当前分支 和 远程learngit项目仓库的默认分支 关联在了一起。一般远程默认分支为master分支。
+                        待确认：
+                            如果想要的是关联远程项目仓库的其他分支该怎么操作？
+                            1、是否是再执行一下如下命令：
+                                git remote add origin myOtherBranch
+                            2、是否是再执行一下如下命令：
+                                git pull origin myOtherBranch
+                                git add....git commit -m .....
+                                git push -u origin myOtherBranch    // 将代码提交到对应的分支，并将该远程分支 和 本地的当前分支进行关联。
+                                // 第一次使用加上了-u参数，是推送内容并关联分支。
+                            
+                添加成功后，远程库的名字就是origin，这是Git默认的叫法。[这个默认的叫法可以改：在上面命令中将orign换成你想改的即可]
+
+            2、向远程仓库push代码：
+                第一次向远程仓库push代码，加上 -u 参数，作用：
+                    Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+                在本地仓库目录下，执行cli ：
+                    git push -u [远程仓库名] [本地分支名]
+                    如： git push -u origin master
+        `}
+        // 2.3、删除和远程库的绑定关系：
+        {`
+            1、查看已绑定的远程库：git remote -v
+                $ git remote -v
+                origin  git@github.com:michaelliao/learn-git.git (fetch)
+                origin  git@github.com:michaelliao/learn-git.git (push)
+                
+            2、然后根据名字，删除绑定关系：git remote rm origin
+        `}
+
+    }
+
+    /** 创建分支，merge代码 */
+    {
+
+        // 1、产看当前代码状态，注意是否保存当前工作区
+        // 2、切换分支，或创建并切换分支。给这个分支拉取包含了目标功能的代码。【可以是从某个远程仓库的分支拉取的，也可以是该分支本地就已经包含了目标功能代码的】
+        // 3、
+
+    }
+
+
+
+</script>
