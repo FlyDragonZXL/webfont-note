@@ -56,15 +56,18 @@
                     如：git@github.com:michaelliao/learngit.git
                     注意：
                         该命令执行完，是将本地的当前分支 和 远程learngit项目仓库的默认分支 关联在了一起。一般远程默认分支为master分支。
-                        待确认：
-                            如果想要的是关联远程项目仓库的其他分支该怎么操作？
-                            1、是否是再执行一下如下命令：
-                                git remote add origin myOtherBranch
-                            2、是否是再执行一下如下命令：
-                                git pull origin myOtherBranch
-                                git add....git commit -m .....
-                                git push -u origin myOtherBranch    // 将代码提交到对应的分支，并将该远程分支 和 本地的当前分支进行关联。
-                                // 第一次使用加上了-u参数，是推送内容并关联分支。
+                        如果想要的是关联远程项目仓库的其他分支,执行push -u 的命令：
+                            git push -u origin myOtherBranch    // 将代码提交到对应的分支，并将该远程分支 和 本地的当前分支进行关联。
+                            // 第一次使用加上了-u参数，是推送内容并关联分支。
+                            
+                            在执行上述命令之前，最好做几个动作：【按需选择执行】
+                            1、可用 git stash 命令，对工作区进行保存和恢复,我常用的命令是：https://git-scm.com/docs/git-stash
+                                git stash -u -k // -u:所有未跟踪的文件也被隐藏起来。 -k:所有已经添加到索引中的更改都保持不变。
+                                git stash pop   // 将stash中保存的记录恢复到工作区，并清空stash。
+                                stash的其他常用命令可阅读本笔记的[stash暂存工作区]章节。
+                            2、可以add、commit一些修改 到本地当前的branch ， 用push作本地&远程关联的同时，将其push到要关联的远程branch
+                            3、在push之前，可以拉一下远程branch的最新代码。git pull myOtherBranch
+                        
                             
                 添加成功后，远程库的名字就是origin，这是Git默认的叫法。[这个默认的叫法可以改：在上面命令中将orign换成你想改的即可]
 
@@ -96,6 +99,62 @@
 
     }
 
+    /** 临时 */
+    {
+        // 在当前branch上，拉其他远程分支的最新代码：
+        git pull origin yourTargetBranchName
+    }
+
+
+
+    /** stash暂存工作区 */
+    {
+        // 常用命令：
+        {`
+            git stash -u -k             // -u:所有未跟踪的文件也被隐藏起来。 -k:所有已经添加到索引中的更改都保持不变。
+            git stash pop               // 将stash中保存的记录恢复到工作区，并清空stash。
+            ----------------------------
+            git stash save [save message]    // 保存，save为可选项，message为本次保存的注释。后面可以跟参数： -u -k
+            git stash list                  // 所有保存的记录列表
+            git stash pop stash@{num}       // 恢复，num是可选项，通过git stash list可查看具体值。只能恢复一次
+            git stash apply stash@{num}     // 恢复，num是可选项，通过git stash list可查看具体值。可回复多次
+            git stash drop stash@{num}      // 删除某个保存，num是可选项，通过git stash list可查看具体值
+            git stash clear                 // 删除所有保存
+            ----------------------------
+            git stash show stash@{num}      // 简略显示做了哪些修改：修改了哪些文件，增删各多少行。
+            git stash show stash@{num}      // 详细显示做了哪些修改：修改了哪些文件，会显示具体修改的内容。
+
+        `}
+
+        // 如何使用stash只暂存工作区的部分文件
+        {
+            // 有时，只备份某些文件更为方便，让另外一些与代码库保持一致。但是：常规 git stash 的一个限制是它会一下暂存所有的文件
+            // 解决办法：add不想stash的文件，stash，用reset取消之前的add。
+            {`
+                1、调用 git add 对那些你不想备份的文件先进行add（例如： git add file1.js, file2.js）
+                2、调用 git stash –keep-index。只会备份那些没有被add的文件。
+                3、调用 git reset 取消已经add的文件的备份，继续自己的工作。
+
+            `}
+        }
+
+        // 注意事项：
+        {
+            // 1、新增的文件，直接执行不带参数的stash命令是不会被存储的。
+            {`
+                说白了就是没有在git 版本控制中的文件，是不能被git stash 存起来的.
+                解决办法：
+                    先执行下git add 加到git版本控制中，然后再git stash就可以了。
+                    这个时候，想切分支就再也不会报错有改动未提交了。
+                    
+            `}
+            
+        }
+
+        // 官方文档：
+        // https://git-scm.com/docs/git-stash
+
+    }
 
 
 </script>
