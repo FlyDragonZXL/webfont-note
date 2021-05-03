@@ -61,6 +61,20 @@
             git branch -D branchB
             git branch -a
 
+        8、撤销上一次commit的内容
+            git log --oneline
+            git reset --hard <commit-id>    // 该操作会彻底回退到某个版本，本地的源码也会变为上一个版本的内容
+
+        9、merge代码：将branchB的内容merge到branchA上
+            git checkout branchA
+            git merge branchB
+        
+        10、commit代码时，添加多行注释
+            通过单引号实现：
+            git commit -m ' 本次修改了：
+            1、增加了git的merge技巧
+            2、增加了git commit时的多行注释技巧 '
+
     `}
 
     /** 本地仓库和远程仓库关联 */
