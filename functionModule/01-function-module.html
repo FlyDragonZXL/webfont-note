@@ -1,0 +1,63 @@
+<!-- 常用小功能模块 -->
+<script>
+    // 目录
+    /** 定时器 */
+    function fun001();
+    /** 设置链接自动切换 */
+    function fun002();
+
+
+    // -------------------------------------
+    /** 定时器 */
+    function fun001(){
+        // 设置定时器
+        {
+            // 举例：在methods中，定义一个方法，方法中启动一个定时器
+            setTime() //设置定时器
+            {  this.clearTimeSet=setInterval(() => { 
+                 this.webSocketClientOnopen();  
+                }, 1000);
+            }
+            // 一般常用开启定时器的地方：［当然也可以在某一个方法或事件中开启］
+            mounted : function () //页面加载完毕就开始加载定时器
+            {
+            this.setTime();
+            }
+        }
+
+        // 定时器的清除：
+        {
+            // 举例：在methods中，定义一个方法，方法中 清除一个定时器
+            clearTime() //清除定时器
+            {
+                clearInterval(this.clearTimeSet);
+            }
+            // 一般常用关闭清除定时器的地方：［当然也可以在某一个方法或事件中关闭清除］
+            beforeDestroy() {    // 页面关闭时清除定时器  
+                clearInterval(this.clearTimeSet);
+            }
+        }
+
+    }
+
+    /** 设置链接自动切换 */
+    function fun002(){
+        // 根据process.env.NODE_ENV === 'development'判断是否是开发环境，或者根据'product'判断是否是生产环境，用三元运算符设置对应环境的链接
+        // 一般在vuex和websocket中配置公共链接，对应文件路径：
+        // src\store\index.js  ，  src\common\js\websocket.js
+        // 配置方法：
+        data(){
+            commonUrl: process.env.NODE_ENV === 'product' ? '生产环境链接 or 线上链接' : '开发环境链接 or 测试环境链接',
+        },
+        // 或者
+        data(){
+            commonUrl: process.env.NODE_ENV === 'development' ? '开发环境链接 or 测试环境链接' : '生产环境链接 or 线上链接',
+        },
+
+    }
+
+
+
+
+
+</script>
