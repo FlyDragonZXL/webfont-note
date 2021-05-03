@@ -64,9 +64,12 @@
             git branch -D branchB
             git branch -a
 
-        8、撤销上一次commit的内容
-            git log --oneline
-            git reset --hard <commit-id>    // 该操作会彻底回退到某个版本，本地的源码也会变为上一个版本的内容
+        8、撤销上一次add/commit的内容
+            撤销git add的内容：
+                git reset
+            撤销git commit的内容：
+                git log --oneline
+                git reset --hard <commit-id>    // 该操作会彻底回退到某个版本，本地的源码也会变为上一个版本的内容
 
         9、merge代码：将branchB的内容merge到branchA上
             git checkout branchA
@@ -77,6 +80,11 @@
             git commit -m ' 本次修改了：
             1、增加了git的merge技巧
             2、增加了git commit时的多行注释技巧 '
+        
+        11、删除远程分支上的某一个文件或目录
+            git rm -r parth // 递归删除远程branch上path对应的文件或文件夹，同时删除本地。若只删除远程而本地保留，在该命令后加：[--cached]
+            git commit -m '删除无用文件'
+            git push
 
     `}
 
