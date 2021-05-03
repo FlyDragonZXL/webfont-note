@@ -16,6 +16,9 @@
     {`
         1、在当前branch上，拉其他远程分支的最新代码：
             git pull origin yourTargetBranchName
+            更新某一个指定的文件：
+                git log --oneline   // 查看commmit-id
+                git checkout <commit-id> <filePath> // 通过commit-id，更新对应版本的某个文件或目录
 
         2、查看远程分支、查看本地分支、查看本地&远程所有分支
             git branch
