@@ -36,7 +36,31 @@
             git push origin myOtherBranch       // 推送代码到远程分支，若无该远程分支，创建远程分支，并与本地分支进行关联。
             git push -u origin myOtherBranch    // 第一次使用加上了-u参数，是推送内容并关联分支。
             git push --set-upstream origin branch_name  // 自动在远程创建一个branch_name分支，然后当前本地分支会track该分支。
-         
+            --------------------------------------------
+            如果已有远程分支branchA,新建一个同名的本地分支，并与同名的远程分支自动关联：
+            git checkout --track origin/branchA
+            --------------------------------------------
+            git checkout -b branchNew01 branchA     // 基于本地branchA创建一个新的本地branch：branchNew01
+            如果要从这个新的本地branchNew01，向远程branchA提交代码，则必须执行一下两句命令：
+            git branch --set-upstream-to=origin/branchA branchNew01 // 执行完该句命令后，才能从远程branchA中向本地branchNew01中pull代码
+            git push origin HEAD:branchA    // 通过该命令，从当前的本地branchNew01向远程branchA进行push代码
+            --------------------------------------------
+            // 创建一个新的本地分支branchNew02,并与远程分支origin/branchA自动关联，可以从该远程分支pull代码，但是push代码需要用到关键字HEAD:branchA
+            git checkout -b branchNew02 origin/branchA
+            git push origin HEAD:branchA
+            --------------------------------------------
+        
+        7、新建一个临时远程+本地branch
+        创建：
+            git checkout -b branchB
+            git add .;git commit -m "创建branchB对应的远程分支origin/branchB";
+            git push origin branchB
+        删除：
+            git checkout -b branchA
+            git push --delete origin branchB
+            git branch -D branchB
+            git branch -a
+
     `}
 
     /** 本地仓库和远程仓库关联 */
