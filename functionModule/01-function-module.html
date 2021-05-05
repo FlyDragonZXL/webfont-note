@@ -12,17 +12,36 @@
     function fun001(){
         // 设置定时器
         {
-            // 举例：在methods中，定义一个方法，方法中启动一个定时器
-            setTime() //设置定时器
-            {  this.clearTimeSet=setInterval(() => { 
-                 this.webSocketClientOnopen();  
-                }, 1000);
-            }
-            // 一般常用开启定时器的地方：［当然也可以在某一个方法或事件中开启］
-            mounted : function () //页面加载完毕就开始加载定时器
+            // 方式一：
             {
-            this.setTime();
+                // 举例：在methods中，定义一个方法，方法中启动一个定时器
+                setTime() //设置定时器
+                {  this.myTimeSet=setInterval(() => { 
+                    this.webSocketClientOnopen();  
+                    }, 1000);
+                }
+                // 一般常用开启定时器的地方：［当然也可以在某一个方法或事件中开启］
+                mounted : function () //页面加载完毕就开始加载定时器
+                {
+                this.setTime();
+                }
             }
+            // 方式二：
+            {
+                // <input type="text" id="clock" />
+                // <script type="text/javascript">
+                var int=self.setInterval("clock()",1000);
+                function clock()
+                {
+                    var d=new Date();
+                    var t=d.toLocaleTimeString();
+                    document.getElementById("clock").value=t;
+                }
+                // </script>
+
+                // <button onclick="int=window.clearInterval(int)">停止</button>
+            }
+
         }
 
         // 定时器的清除：
@@ -30,14 +49,17 @@
             // 举例：在methods中，定义一个方法，方法中 清除一个定时器
             clearTime() //清除定时器
             {
-                clearInterval(this.clearTimeSet);
+                clearInterval(this.myTimeSet);
             }
             // 一般常用关闭清除定时器的地方：［当然也可以在某一个方法或事件中关闭清除］
             beforeDestroy() {    // 页面关闭时清除定时器  
-                clearInterval(this.clearTimeSet);
+                clearInterval(this.myTimeSet);
             }
         }
 
+
+        https://github.com/FlyDragonZXL/webfont-note/blob/master/functionModule/01-function-module.html
+        
     }
 
     /** 设置链接自动切换 */
