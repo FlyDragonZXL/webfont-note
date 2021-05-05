@@ -1,0 +1,268 @@
+<!-- 常用小功能模块 -->
+<script>
+    // 目录
+    /** 【数据双向绑定】vue里：【给内联style使用变量】【给标签里插入变量作为内容】 */
+    function fun001();
+    /** 命名：驼峰or短横线命名 */
+    function fun002();
+
+
+    // -------------------------------------
+    /** 【数据双向绑定】vue里：【给内联style使用变量】【给标签里插入变量作为内容】 */
+    function fun001(){
+        // 【vue数据双向绑定】内联style使用变量
+        {
+            // 1、style使用变量给属性赋值(变量名上不加引号)：'background':bingingBtnBackground
+            {`
+                <a-button
+                    :style="{'marginLeft':'8px','background':bingingBtnBackground}"
+                    type="primary"
+                    @click="intoBindingFn"
+                >{{this.bindingBtnTitle}}
+                </a-button>
+            `}
+            // 2、在vue的data属性中，定义变量bingingBtnBackground，并为其赋初始值
+            {`
+                data() {
+                    return {
+                        ...,
+                        bingingBtnBackground: '#0067ed',
+                    }
+                },       
+            `}
+            // 3、在其他地方改变该变量，DOM标签对应的属性值也会随之改变。【vue的数据双向绑定】
+            this.bingingBtnBackground = '#00ffee'
+
+        }
+
+        // 【vue数据双向绑定】给标签里插入变量作为内容
+        {
+            // 1、在标签之间，使用{{}}插值：<a-button>{{this.bindingBtnTitle}}</a-button>
+            {`
+                <a-button
+                    :style="{'marginLeft':'8px','background':bingingBtnBackground}"
+                    type="primary"
+                    @click="intoBindingFn"
+                >{{this.bindingBtnTitle}}
+                </a-button>
+            `}
+            // 2、在vue的data属性中，定义变量bindingBtnTitle，并为其赋初始值
+            {`
+                data() {
+                    return {
+                        ...,
+                        bindingBtnTitle: '前往绑定',
+                    }
+                },       
+            `}
+            // 3、在其他地方改变该变量，DOM标签对应的属性值也会随之改变。【vue的数据双向绑定】
+            this.bindingBtnTitle = '已绑定'
+
+        }
+
+    }
+
+
+    /** 命名：驼峰or短横线命名 */
+    function fun002(){
+        {` 
+            VUE中，组件和props 在js里面用驼峰，在HTML里面用短线命令法。【因为HTML里不区分大小写】
+            VUE中，事件名不会被用作一个JavaScript变量名或属性名，建议使用短横线方式，不建议使用驼峰式。
+            // 并且，v-on事件监听器在DOM模板中会被自动转换为全小写。（HEML大小写不敏感）
+            // 所以，v-on:myEvent 将会变成 v-on:myevent，这会导致myEvent不可被监听到。
+            https://www.cnblogs.com/cjll/p/13706747.html 
+        `}
+        // 1、什么时候用驼峰命名规则
+        {
+            // 1.1、子组件接收父组件的数据时
+            // 如果父组件向子组件传递数据时使用了短横线分隔命名, 子组件接收时写驼峰式命名
+            {`
+                // <!-- 在父组件，向子组件传递数据：短横线分割命名，不能使用驼峰式-->
+                <my-son :parent-name="name"></my-son>
+
+                // 在子组件中，props接收父组件传递的数据，用驼峰式，不能用短横线式
+                Vue.component("mySon", { 
+                    template: "#son",
+                    props:["parentName"] // 驼峰式接收
+                    });
+
+            `}
+            // 1.2、DOM的内联style，属性名只能用驼峰式
+            // margin-left 写成 marginLeft
+            {`
+                <a-button
+                    :style="{'marginLeft':'8px','background':bingingBtnBackground}"
+                    type="primary"
+                    @click="intoBindingFn"
+                >{{this.bindingBtnTitle}}
+                </a-button>
+            `}
+
+        }
+        // 2、什么时候用短横线命名规则
+        {
+            // 2.1、使用组件时
+            // 如果在注册组件的时候使用了驼峰命名, 那么在使用时需要转换成短横线分隔命名
+            {`
+                // 注册组件时：驼峰式命名
+                Vue.component("mySon", { 
+                    template: "#son",
+                    });
+
+                // 使用组件时：需要转换成短横线分割命名
+                <my-son></my-son><!-- 使用时：短横线分割命名-->
+
+                // 注意：定义组件有两种方式，kebab-case，PascalCase,样式分别如下：
+                Vue.component('my-component-name',{ /* ... */ })
+                Vue.component('myComponentName',{ /* ... */ })
+
+            `}
+            // 2.2、父组件向子组件传递数据时，只能用短横线命名规则，不能用驼峰式
+            // 但是：子组件在props中接收父组件的数据时，刚好相反：只能用驼峰式，不能用短横线式
+            {`
+                // <!-- 在父组件，向子组件传递数据：短横线分割命名，不能使用驼峰式-->
+                <my-son :parent-name="name"></my-son>
+
+                // 在子组件中，props接收父组件传递的数据，用驼峰式，不能用短横线式
+                Vue.component("mySon", { 
+                    template: "#son",
+                    props:["parentName"] // 驼峰式接收
+                    });
+
+            `}
+            // 2.3、传递方法时，双方都只能用短横线命名规则，不能用驼峰式
+            {`
+                // <!-- 向子组件传递方法：短横线分割命名，不能使用驼峰式-->
+                    <my-son @parent-fn="fn"></my-son>
+
+                // 父组件中定义fn方法：
+                    let vue = new Vue({
+                        el: '#app',
+                        data:{
+                            name:"test1"
+                        },
+                        methods:{
+                            fn(){
+                                console.log("test2");
+                            }
+                        }
+                    });
+
+                // 点击button，调用子组件的fn方法：
+                    <template id="son">
+                        <button @click="fn">按钮</button>
+                    </template>
+                
+                // 子组件的fn方法，调用 通过this.$emit("parent-fn")接收父组件传递过来的 方法：
+                    Vue.component("mySon", {
+                        template: "#son",
+                        props:[],
+                        methods:{
+                            fn(){
+                                this.$emit("parent-fn"); // 短横线式接收
+                            }
+                        }
+                        });
+
+            `}
+        }
+        // 3、驼峰命名    转换为    短横线命名
+        {
+            {`
+                将骆驼命名规则的字符串转换成使用短横线命名法的字符串, 并且全小写 .
+                例如: 'getElementById' => 'get-element-by-id'
+            `}
+
+            // 基础方法，方式一：【采用数组的方法】
+            function getKebabCase ( str ) {
+                var arr = str.split('');
+                str = arr.map(function ( item ){
+                    if( item.toUpperCase() === item ){
+                        return '-' + item.toLowerCase();
+                    }else{
+                        return item;
+                    }
+                }).join( '' );
+                return str;
+            }
+            console.log( getKebabCase( 'getElementById' ) ); //get-element-by-id
+
+            // 基础方法，方式二：【正则表达式】
+            function getKebabCase( str ) {
+                return str.replace( /[A-Z]/g, function( i ) {
+                    return '-' + i.toLowerCase();
+                })
+            }
+            console.log( getKebabCase( 'getElementById' ) ); //get-element-by-id
+
+            // 进阶方法，方式三：【考虑缓存和闭包,依次提高性能和减少污染】
+            var getKebabCase = (function() {
+                var cache = {};
+                return function ( str ) {
+                    var ret = cache[ str ];
+                    if( ret ) {
+                        return ret;
+                    }else{
+                        return cache[ str ] = str.replace( /[A-Z]/g, function( i ){
+                            return '-' + i.toLowerCase();
+                        })
+                    }
+                } 
+            })();
+            console.log( getKebabCase( 'getElementById' ) ); //get-element-by-id
+
+        }
+        // 4、短横线命名  转换为    驼峰命名
+        {
+            {`
+                将短横线命名法的字符串转换成使用骆驼命名规则的字符串, 并且全小写 .
+                例如: 'get-element-by-id' => 'getElementById'
+            `}
+
+            // 基础方法，方式一：【采用数组的方法】
+            function getCamelCase( str ) {
+                var arr = str.split( '-' );
+                return arr.map( function( item, index ) {
+                    if( index === 0 ){
+                        return item;
+                    }else{
+                        return item.charAt(0).toUpperCase() + item.slice( 1 );
+                    }
+                }).join('');
+            }
+            console.log( getCamelCase( 'get-element-by-id' ) ); //getElementById
+
+            // 基础方法，方式二：【正则表达式】
+            function getCamelCase( str ) {
+                return str.replace( /-([a-z])/g, function( all, i ){
+                    return i.toUpperCase();
+                } )
+            }
+            console.log( getCamelCase( 'get-element-by-id' ) ); //getElementById
+
+            // 进阶方法，方式三：【考虑缓存和闭包,依次提高性能和减少污染】
+            var getCamelCase = (function() {
+                var cache = {};
+                return function ( str ) {
+                    if( cache[ str ] ) {
+                        return cache[ str ];
+                    }else{
+                        return cache[ str ] = str.replace( /-([a-z])/g, function( all, i ) {
+                            return i.toUpperCase();
+                        })
+                    }
+                }
+            })()
+            console.log( getCamelCase( 'get-element-by-id' ) ); //getElementById
+
+        }
+
+    }
+
+
+
+
+
+
+
+</script>
