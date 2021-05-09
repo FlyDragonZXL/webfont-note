@@ -1,12 +1,57 @@
 <!-- 正则表达式 -->
 <script>
     // 目录
+    /** 正则表达式的常用概述 */
+    function fun000();
     /** 正则表达式的规则 */
     function fun001();
     /** 可以使用正则表达式的字符串方法 */
     function fun002()
 
     // -------------------------------------
+    /** 正则表达式的常用概述 */
+    function fun000(){
+        // 常用的方法：
+        {
+            // －－－－－－
+            // 检索字符串是否有匹配规则的子字符串，若有：返回第一个匹配结果的index，否则返回-1
+            // serch()方法，不执行全局匹配，会忽略标志g，每次都是从字符串的开始进行检索。
+            String.prototype.search(reg); 
+            // －－－－－－
+            // 检索字符串，找到一个或多个与正则表达式相匹配的文本。
+            String.prototype.match(reg);
+            // －－－－－－
+            // 将字符串，按照一定的规则，分割为数组
+            String.prototype.split(reg);
+            // －－－－－－
+            // 将字符串，按照一定的规则匹配，并用第二个参数对匹配到的结果进行替换。
+            String.prototype.replace(str,replaceStr);
+            String.prototype.replace(reg,replaceStr);
+            String.prototype.replace(reg,function);
+            {
+                'a1b2c3d4e5'.replace(/(\d)(\w)(\d)/g , function(match, group1, group2, group3, index, origin) {return ;};
+                // 用返回的结果作为 替换字符串 。
+                `
+                    function 会在每次匹配替换的时候调用，function有4个参数：
+                    参数1: 匹配字符串
+                    参数2: 正则表达式的分组内容，没有分组则没有该参数
+                    参数3: 匹配项在字符串中的 index
+                    参数4: 原字符串
+                `
+            }
+            // －－－－－－
+            // 测试：字符串str 是否存在 匹配规则对应的子字符串，返回：true/false
+            RegExp.prototype.test(str);
+            // －－－－－－
+            // 执行匹配，返回结果数组，或null。同时更新RegExp对象的index属性和input属性
+            // index属性：声明匹配文本的第一个字符的位置// input属性：存放被检索的字符串string
+            RegExp.prototype.exec(str);
+        }
+
+        // 常用的规则：
+        fun001();
+    }
+
     /** 正则表达式的规则 */
     function fun001(){
         // JavaScript中使用正则表达式的两种方式：
@@ -307,32 +352,33 @@
         String.prototype.replace(reg,replaceStr);
         String.prototype.replace(reg,function);
         {
-            'a1b1c1'.replace('1',2);   // "a2b1c1"
-            'a1b1c1'.replace(/1/g,2);   // "a2b2c2"
-            
-            // 假设需求： a1b2c3d4e5 --> a2b3c4d5e6 ,则使用 replace(reg,function); 方法实现：
-            `
-                function 会在每次匹配替换的时候调用，function有4个参数：
-                参数1: 匹配字符串
-                参数2: 正则表达式的分组内容，没有分组则没有该参数
-                参数3: 匹配项在字符串中的 index
-                参数4: 原字符串
-            ``
-            // 无分组的情况：
-            'a1b2c3d4e5'.replace(/\d/g , function(match, index, origin) {
-                console.log(index);
-                // 将匹配的结果，从字符转为数字，然后做相应的计算后返回。
-                return parseInt(match)+1;   // 用返回的结果作为 替换字符串 。 "a2b3c4d5e6"
-            });
-            // 有分组的情况：
-            'a1b2c3d4e5'.replace(/(\d)(\w)(\d)/g , function(match, group1, group2, group3, index, origin) {
-                console.log(match); // "1b2" "3d4"
-                // 将匹配的结果，从字符转为数字，然后做相应的计算后返回。
-                return group1 + group3;   // 用返回的结果作为 替换字符串 。 "a12c34e5"
-            });
-
+            {
+                'a1b1c1'.replace('1',2);   // "a2b1c1"
+                'a1b1c1'.replace(/1/g,2);   // "a2b2c2"
+            }
+            {
+                // 假设需求： a1b2c3d4e5 --> a2b3c4d5e6 ,则使用 replace(reg,function); 方法实现：
+                `
+                    function 会在每次匹配替换的时候调用，function有4个参数：
+                    参数1: 匹配字符串
+                    参数2: 正则表达式的分组内容，没有分组则没有该参数
+                    参数3: 匹配项在字符串中的 index
+                    参数4: 原字符串
+                `
+                // 无分组的情况：
+                'a1b2c3d4e5'.replace(/\d/g , function(match, index, origin) {
+                    console.log(index);
+                    // 将匹配的结果，从字符转为数字，然后做相应的计算后返回。
+                    return parseInt(match)+1;   // 用返回的结果作为 替换字符串 。 "a2b3c4d5e6"
+                });
+                // 有分组的情况：
+                'a1b2c3d4e5'.replace(/(\d)(\w)(\d)/g , function(match, group1, group2, group3, index, origin) {
+                    console.log(match); // "1b2" "3d4"
+                    // 将匹配的结果，从字符转为数字，然后做相应的计算后返回。
+                    return group1 + group3;   // 用返回的结果作为 替换字符串 。 "a12c34e5"
+                });
+            }
         }
-
     }
 
 
